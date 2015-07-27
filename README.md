@@ -1,0 +1,1 @@
+Python project to collect Namespace and Project Information from a Gitlab server and create a report
