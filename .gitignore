@@ -1,5 +1,10 @@
 git # pycharm
 .idea*
+
+## ignore config.ini
+config.ini
+
+
 # Mac OSX Filesystem BS
 .DS_Store
 
