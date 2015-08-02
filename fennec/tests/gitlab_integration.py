@@ -29,16 +29,3 @@ class TestFennec(unittest.TestCase):
         pass
 
 
-
-class TestGitLabConnect(unittest.TestCase):
-    def setUp(self):
-        pass
-
-    def tearDown(self):
-        pass
-
-    def test_gitlab_connect_success(self):
-        pass
-
-    def test_gitlab_connect_failed(self):
-        pass
