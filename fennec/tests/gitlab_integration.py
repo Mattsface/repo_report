@@ -1,12 +1,6 @@
 import unittest
 from fennec.fennec import Fennec
-from fennec.gl_connect import GitlabConnect
-import ConfigParser
-
-# Requires a config.ini file in the test folder
-# DO NOT COMMIT the config.ini file, it is ignored for a reason
-
-
+from mock import MagicMock
 
 
 class TestFennec(unittest.TestCase):

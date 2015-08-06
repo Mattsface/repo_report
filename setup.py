@@ -7,7 +7,8 @@ setup(name='fennec',
       author_email='spahmatther@gmail.com',
       scripts=[''],
       packages=find_packages(),
-      install_requires=['python-gitlab'],
+      install_requires=['python-gitlab',
+                        'mock'],
       dependency_links=[
           "git+ssh://git@github.com:gpocentek/python-gitlab.git#python-gitlab"
       ],
