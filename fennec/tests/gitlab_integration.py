@@ -1,17 +1,24 @@
 import unittest
 from fennec.fennec import Fennec
 from mock import MagicMock
+from gitlab import *
 
 
 class TestFennec(unittest.TestCase):
     def setUp(self):
-        pass
+        """
+        Set up object mock
+        """
+        gl = Gitlab()
+        gl.auth = MagicMock(None)
+        gl.Group = MagicMock()
 
     def tearDown(self):
         pass
 
     def test_namespace_collection(self):
-        pass
+        fen = Fennec()
+
 
     def test_failed_namespace_collection(self):
         pass
