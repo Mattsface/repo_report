@@ -28,8 +28,6 @@ class FakeGroupMember(GroupMember):
         pass
 
 
-
-
 class TestFennec(unittest.TestCase):
 
     def setUp(self):
@@ -64,13 +62,13 @@ class TestFennec(unittest.TestCase):
         expected_results = {'group1': ['member1', 'member2'],
                             'group2': ['member1', 'member2']}
 
-        fakefuckinggroup = FakeGroup()
-        fakefuckinggroup.name = {'group1': ['member1', 'member2'], 'group2': ['member1, member2']}
-        mock_member.return_value = [fakefuckinggroup]
-        # act
-        fakefuckinggroup = FakeGroup.Member()
+        groups = []
+        fakegroup = FakeGroup()
+        fakegroup.name = 'group1'
+        mock_member.return_value = ['member1', 'member2']
 
-        results = self.fennec.find_members(fakefuckinggroup)
+        # act
+        results = self.fennec.find_members(fakegroup)
 
 
         # assert
