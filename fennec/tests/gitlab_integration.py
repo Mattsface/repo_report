@@ -22,6 +22,8 @@ class FakeGitlab(Gitlab):
 
 
 class FakeGroupMember(GroupMember):
+    name = None
+
     def __init__(self):
         pass
 
@@ -63,11 +65,12 @@ class TestFennec(unittest.TestCase):
                             'group2': ['member1', 'member2']}
 
         fakefuckinggroup = FakeGroup()
-        fakefuckinggroup.name = 'group1'
+        fakefuckinggroup.name = {'group1': ['member1', 'member2'], 'group2': ['member1, member2']}
         mock_member.return_value = [fakefuckinggroup]
         # act
+        fakefuckinggroup = FakeGroup.Member()
 
-        results = self.fennec.find_members(gl.Groups())
+        results = self.fennec.find_members(fakefuckinggroup)
 
 
         # assert

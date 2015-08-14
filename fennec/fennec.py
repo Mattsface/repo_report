@@ -24,7 +24,7 @@ class Fennec(object):
          'group2': ['member1', 'member2']
         }
         """
-        members = {group.name: group.Member() for group in groups}
+        members = { group.name: [member] for group in groups for member in group }
 
         return members
 
