@@ -1,6 +1,31 @@
 import unittest
 from fennec.fennec import Fennec
-from mock import MagicMock, Mock, call
+from gitlab import Gitlab
+from gitlab import Group
+from gitlab import GroupMember
+from mock import patch, MagicMock, Mock, call
+
+
+class FakeGroup(Group):
+    name = None
+
+    def __init__(self):
+        pass
+
+    def Member(self, **kwargs):
+        pass
+
+
+class FakeGitlab(Gitlab):
+    def __init__(self):
+        pass
+
+
+class FakeGroupMember(GroupMember):
+    def __init__(self):
+        pass
+
+
 
 
 class TestFennec(unittest.TestCase):
@@ -9,46 +34,46 @@ class TestFennec(unittest.TestCase):
         """
         Set up object mock
         """
-        class Gitlab(object):
-            _groupList = None
+        self.fennec = Fennec(FakeGitlab())
 
-            def auth(self):
-                return None
 
-            def Group(self):
-                return self._groupList
+    @patch.object(Gitlab, 'Group')
+    def test_group_collection(self, mock_group):
+        """
+        Verify
+        :return:
+        """
+        # arrange
+        expected_groups = [FakeGroup() for i in range(3)]
+        mock_group.return_value = expected_groups
 
-        class Group(Gitlab):
-            _name = None
+        # act
+        results = self.fennec.groups()
 
-            def name(self):
-                return self._name
+        # assert
+        self.assertEqual(expected_groups, results)
+        self.assertEqual(isinstance(results[0], Group), True)
+        self.assertEqual(len(results), 3)
 
-        testname = self.id().split(".")[2]
+    @patch.object(FakeGroup, 'Member')
+    def test_find_members(self, mock_member):
 
-        if testname == "test_group_collection":
-            group_list = ['group1', 'group2', 'group3', 'group4']
-            self.gl = Mock(spec=Gitlab)
-            self.gl.Group.return_value = [Mock(spec=Group, _new_name=group) for group in group_list]
-        else:
-            pass
+        # arrange
+        expected_results = {'group1': ['member1', 'member2'],
+                            'group2': ['member1', 'member2']}
 
-    def tearDown(self):
-        print "Tearing down tests"
+        fakefuckinggroup = FakeGroup()
+        fakefuckinggroup.name = 'group1'
+        mock_member.return_value = [fakefuckinggroup]
+        # act
 
-    def test_group_collection(self):
-        expected_list = ['group1', 'group2', 'group3', 'group4']
-        fen = Fennec(self.gl)
-        actually_list = [group.name for group in fen.groups()]
-        self.assertEqual(actually_list, expected_list, "Expected {}, but got {}".format(actually_list, expected_list))
+        results = self.fennec.find_members(gl.Groups())
 
-    def test_failed_namespace_collection(self):
-        pass
 
-    def test_repos_in_namespace_collection(self):
-        pass
+        # assert
+        self.assertEqual(expected_results, results)
 
-    def test_failed_repos_in_namespace_collection(self):
-        pass
+
+
 
 
