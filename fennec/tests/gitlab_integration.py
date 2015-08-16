@@ -7,10 +7,11 @@ from mock import patch, MagicMock, Mock, call
 
 
 class FakeGroup(Group):
+
     name = None
 
-    def __init__(self):
-        pass
+    def __init__(self, name):
+        self.name = name
 
     def Member(self, **kwargs):
         pass
@@ -24,9 +25,8 @@ class FakeGitlab(Gitlab):
 class FakeGroupMember(GroupMember):
     name = None
 
-    def __init__(self):
-        pass
-
+    def __init__(self, name):
+        self.name = name
 
 
 
@@ -36,21 +36,18 @@ class TestFennec(unittest.TestCase):
         """
         Set up object mock
         """
-        self.fennec = Fennec(FakeGitlab())
+        self.gl = FakeGitlab
+        self.fennec = Fennec()
 
 
     @patch.object(Gitlab, 'Group')
     def test_group_collection(self, mock_group):
-        """
-        Verify
-        :return:
-        """
         # arrange
-        expected_groups = [FakeGroup() for i in range(3)]
+        expected_groups = [FakeGroup('i') for i in range(3)]
         mock_group.return_value = expected_groups
 
         # act
-        results = self.fennec.groups()
+        results = self.fennec.groups(self.gl)
 
         # assert
         self.assertEqual(expected_groups, results)
@@ -61,20 +58,23 @@ class TestFennec(unittest.TestCase):
     def test_find_members(self, mock_member):
 
         # arrange
-        expected_results = {'group1': ['member1', 'member2'],
-                            'group2': ['member1', 'member2']}
+        expected_results = {'group1': ['member1', 'member2', 'member3'],
+                            'group2': ['member1', 'member2', 'member3'],
+                            'group3': ['member1', 'member2', 'member3']}
 
-        fakefuckinggroup = FakeGroup()
-        fakefuckinggroup.name = {'group1': ['member1', 'member2'], 'group2': ['member1, member2']}
-        mock_member.return_value = [fakefuckinggroup]
+        fakegroups = [FakeGroup(group) for group in expected_results.iterkeys()]
+        fakemembers = [FakeGroupMember(member) for member in ['member1', 'member2', 'member3']]
+        mock_member.return_value = fakemembers
+
         # act
-        fakefuckinggroup = FakeGroup.Member()
-
-        results = self.fennec.find_members(fakefuckinggroup)
-
+        results = self.fennec.find_members(fakegroups)
 
         # assert
         self.assertEqual(expected_results, results)
+
+    @patch.object(FakeGroup, 'Projects')
+    def test_find_projects(self):
+        pass
 
 
 

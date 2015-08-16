@@ -1,33 +1,31 @@
-
 from gitlab import *
 
 
 class Fennec(object):
-    def __init__(self, gl):
-        self.gl = gl
 
-    def groups(self):
+    @classmethod
+    def groups(cls, gl):
         """
         return a list of group objects
         :return: list
         """
-        return self.gl.Group()
+        return gl.Group()
 
-    def find_members(self, groups):
+    @classmethod
+    def find_members(cls, groups):
         """
-
         :param groups: is a list of group objects
-        :return: a dictionary of groups and members
+        :return: a dictionary of groups and list of its members names
         """
         """
         {'group1': ['member1', 'member2'],
          'group2': ['member1', 'member2']
         }
         """
-        members = { group.name: [member] for group in groups for member in group }
+        members = {group.name: [member.name for member in group.Member()] for group in groups}
 
         return members
 
-
-
+    def find_projects(self, groups):
+        pass
 
