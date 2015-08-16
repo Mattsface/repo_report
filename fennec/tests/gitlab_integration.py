@@ -29,7 +29,7 @@ class FakeGroupMember(GroupMember):
 
 
 class FakeProject(Project):
-    
+
     def __init__(self, name, forked_from_project=None):
         self.name = name
         self.forked_from_project = forked_from_project
@@ -43,6 +43,7 @@ class TestFennec(unittest.TestCase):
         """
         self.gl = FakeGitlab
         self.fennec = Fennec()
+        self.groups = ['group1', 'group2', 'group3']
 
 
     @patch.object(Gitlab, 'Group')
@@ -74,20 +75,40 @@ class TestFennec(unittest.TestCase):
         # act
         results = self.fennec.find_members(fakegroups)
 
-        # assert
+        # assert TODO Add more tests
         self.assertEqual(expected_results, results)
 
-    @patch.object(Gitlab, 'Projects')
-    def test_find_namespace_projects(self):
+    @patch.object(Gitlab, 'Project')
+    def test_find_namespace_projects(self, mock_project):
 
         # arrange
         expected_results = {'group1': ['project1', 'project2', 'project3'],
-                            'group2': ['project1', 'project2', 'project3'],
-                            'group3': ['project1', 'project2', 'project3']}
+                            'group2': ['project4', 'project5', 'project6'],
+                            'group3': ['project7', 'project8', 'project9']}
 
-        expected_projects = [FakeProject()]
+        fake_projects_group1 = [FakeProject(project) for project in ['project1', 'project2', 'project3']]
+        fake_projects_group2 = [FakeProject(project) for project in ['project4', 'project5', 'project6']]
+        fake_projects_group3 = [FakeProject(project) for project in ['project7', 'project8', 'project7']]
+        for project in fake_projects_group1:
+            setattr(project, 'namespace', FakeGroup('group1'))
+
+        for project in fake_projects_group2:
+            setattr(project, 'namespace', FakeGroup('group2'))
+            
+        for project in fake_projects_group3:
+            setattr(project, 'namespace', FakeGroup('group3'))
+
+        fake_groups = [ FakeGroup(group) for group in self.groups]
+        fake_projects = fake_projects_group1 + fake_projects_group2 + fake_projects_group3
+
+        forked_project = FakeProject('forked_project')
+        setattr(forked_project, 'forked_from_project', dict(path='testpast', name='project2', namespace='not_a_group'))
+
+        fake_projects.append(forked_project)
+        mock_project.return_value = fake_projects
+
         # act
-
+        results = self.fennec.find_namespace_projects(self.gl, self.groups)
 
         # assert
-        pass
+        self.assertEqual(expected_results, results)

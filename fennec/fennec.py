@@ -26,10 +26,26 @@ class Fennec(object):
     def find_namespace_projects(gl, groups):
         """
         :param gl groups: A gitlab connection, and the list of gitlab groups
-        :return: A dictionary of groups and their projects
+        :return dict: A dictionary of groups and their projects
         """
         # Gather all the projects... this could take a while
         # { 'namespace': [ 'project1', 'project2' ] }
+        collected_projects = []
+
+        for project in gl.Project():
+            collected_projects.append(project)
+
+        return collected_projects
+
+
+    @staticmethod
+    def find_forked_namespace_projects(gl):
+        """
+        :param gl:
+        :return dict: A dictionary of forked projects
+        """
+        pass
+
 
     @staticmethod
     def is_forked(project):
@@ -41,5 +57,5 @@ class Fennec(object):
         try:
             if project.forked_from_project:
                 return True
-        except KeyError:
+        except AttributeError:
             return False
