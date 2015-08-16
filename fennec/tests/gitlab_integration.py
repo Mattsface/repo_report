@@ -9,7 +9,6 @@ from mock import patch, MagicMock, Mock, call
 
 class FakeGroup(Group):
 
-    name = None
 
     def __init__(self, name):
         self.name = name
@@ -24,14 +23,16 @@ class FakeGitlab(Gitlab):
 
 
 class FakeGroupMember(GroupMember):
-    name = None
 
     def __init__(self, name):
         self.name = name
 
 
 class FakeProject(Project):
-    pass
+    
+    def __init__(self, name, forked_from_project=None):
+        self.name = name
+        self.forked_from_project = forked_from_project
 
 
 class TestFennec(unittest.TestCase):
@@ -76,12 +77,15 @@ class TestFennec(unittest.TestCase):
         # assert
         self.assertEqual(expected_results, results)
 
-    @patch.object(FakeGroup, 'Projects')
-    def test_find_projects(self):
+    @patch.object(Gitlab, 'Projects')
+    def test_find_namespace_projects(self):
 
         # arrange
+        expected_results = {'group1': ['project1', 'project2', 'project3'],
+                            'group2': ['project1', 'project2', 'project3'],
+                            'group3': ['project1', 'project2', 'project3']}
 
-
+        expected_projects = [FakeProject()]
         # act
 
 

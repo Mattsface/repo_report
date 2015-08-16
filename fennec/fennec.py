@@ -3,29 +3,43 @@ from gitlab import *
 
 class Fennec(object):
 
-    @classmethod
-    def groups(cls, gl):
+    @staticmethod
+    def groups(gl):
         """
         return a list of group objects
+        :param gl: a gitlab connection object
         :return: list
         """
         return gl.Group()
 
-    @classmethod
-    def find_members(cls, groups):
+    @staticmethod
+    def find_members(groups):
         """
-        :param groups: is a list of group objects
+        :param groups: A list of gitlab group objects
         :return: a dictionary of groups and list of its members names
-        """
-        """
-        {'group1': ['member1', 'member2'],
-         'group2': ['member1', 'member2']
-        }
         """
         members = {group.name: [member.name for member in group.Member()] for group in groups}
 
         return members
 
-    def find_projects(self, groups):
-        pass
+    @staticmethod
+    def find_namespace_projects(gl, groups):
+        """
+        :param gl groups: A gitlab connection, and the list of gitlab groups
+        :return: A dictionary of groups and their projects
+        """
+        # Gather all the projects... this could take a while
+        # { 'namespace': [ 'project1', 'project2' ] }
 
+    @staticmethod
+    def is_forked(project):
+        """
+        Returns True of False if the project is forked
+        :param project: a project object
+        :return: boolean
+        """
+        try:
+            if project.forked_from_project:
+                return True
+        except KeyError:
+            return False
