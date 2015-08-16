@@ -76,7 +76,3 @@ class TestFennec(unittest.TestCase):
     def test_find_projects(self):
         pass
 
-
-
-
-
