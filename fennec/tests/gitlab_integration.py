@@ -3,6 +3,7 @@ from fennec.fennec import Fennec
 from gitlab import Gitlab
 from gitlab import Group
 from gitlab import GroupMember
+from gitlab import Project
 from mock import patch, MagicMock, Mock, call
 
 
@@ -28,6 +29,9 @@ class FakeGroupMember(GroupMember):
     def __init__(self, name):
         self.name = name
 
+
+class FakeProject(Project):
+    pass
 
 
 class TestFennec(unittest.TestCase):
@@ -74,5 +78,12 @@ class TestFennec(unittest.TestCase):
 
     @patch.object(FakeGroup, 'Projects')
     def test_find_projects(self):
-        pass
 
+        # arrange
+
+
+        # act
+
+
+        # assert
+        pass
