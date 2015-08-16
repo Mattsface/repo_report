@@ -94,11 +94,11 @@ class TestFennec(unittest.TestCase):
 
         for project in fake_projects_group2:
             setattr(project, 'namespace', FakeGroup('group2'))
-            
+
         for project in fake_projects_group3:
             setattr(project, 'namespace', FakeGroup('group3'))
 
-        fake_groups = [ FakeGroup(group) for group in self.groups]
+        fake_groups = [FakeGroup(group) for group in self.groups]
         fake_projects = fake_projects_group1 + fake_projects_group2 + fake_projects_group3
 
         forked_project = FakeProject('forked_project')
@@ -108,7 +108,7 @@ class TestFennec(unittest.TestCase):
         mock_project.return_value = fake_projects
 
         # act
-        results = self.fennec.find_namespace_projects(self.gl, self.groups)
+        results = self.fennec.find_namespace_projects(self.gl, fake_groups)
 
         # assert
         self.assertEqual(expected_results, results)

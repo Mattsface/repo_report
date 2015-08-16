@@ -28,15 +28,32 @@ class Fennec(object):
         :param gl groups: A gitlab connection, and the list of gitlab groups
         :return dict: A dictionary of groups and their projects
         """
-        # Gather all the projects... this could take a while
-        # { 'namespace': [ 'project1', 'project2' ] }
-        collected_projects = []
+        def is_forked(project):
+            """
+            Returns True of False if the project is forked
+            :param project: a project object
+            :return: boolean
+            """
+            try:
+                if project.forked_from_project:
+                    return True
+            except AttributeError:
+                return False
+
+        collected_projects = { }
 
         for project in gl.Project():
-            collected_projects.append(project)
 
+            project_namespace = project.namespace.name
+
+            if is_forked(project):
+                continue
+            elif project_namespace in collected_projects:
+                collected_projects[project.namespace].append(project)
+            else:
+                collected_projects[project.namespace] = []
+                collected_projects.update({project.namespace: project.name})
         return collected_projects
-
 
     @staticmethod
     def find_forked_namespace_projects(gl):
@@ -44,18 +61,20 @@ class Fennec(object):
         :param gl:
         :return dict: A dictionary of forked projects
         """
+
+        def is_forked(project):
+            """
+            Returns True of False if the project is forked
+            :param project: a project object
+            :return: boolean
+            """
+            try:
+                if project.forked_from_project:
+                    return True
+            except AttributeError:
+                return False
+
         pass
 
 
-    @staticmethod
-    def is_forked(project):
-        """
-        Returns True of False if the project is forked
-        :param project: a project object
-        :return: boolean
-        """
-        try:
-            if project.forked_from_project:
-                return True
-        except AttributeError:
-            return False
+
