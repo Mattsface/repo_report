@@ -12,11 +12,29 @@
 import argparse
 import email
 from gitlab import *
+import ConfigParser
 
 
 
 def main():
     args = parse_arguments()
+    config = import_config(args.config_file)
+
+
+def import_config(config_file=None):
+    """
+    import config file
+    """
+    config = ConfigParser.ConfigParser()
+
+    if config_file is None:
+        config_file = "~/.python-gitlab.cfg"
+    try:
+        config.readfp(open(config_file))
+        return config
+    except IOError:
+        print "Unable to open config file, place it in ~/.python-gitlab.cfg"
+        sys.exit(1)
 
 
 def parse_arguments():
@@ -31,7 +49,7 @@ def parse_arguments():
     output.add_argument('-e', action='store', dest='email', type=bool, help="Length of random password to be created")
     output.add_argument('-j', action='store', dest='json', type=bool, help="Password for role account")
 
-    parser.add_argument('-c', action='store', dest='config_file', help="Location of config.ini")
+    parser.add_argument('-c', action='store', dest='config_file', help="Location of python-gitlab.cfg")
 
     args = parser.parse_args()
     return args
