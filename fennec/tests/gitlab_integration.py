@@ -45,8 +45,6 @@ class TestFennec(unittest.TestCase):
         self.fennec = Fennec()
         self.groups = ['group1', 'group2', 'group3']
 
-        
-
 
     @patch.object(Gitlab, 'Group')
     def test_group_collection(self, mock_group):

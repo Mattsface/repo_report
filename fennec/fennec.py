@@ -18,6 +18,7 @@ class Fennec(object):
         :param groups: A list of gitlab group objects
         :return: a dictionary of groups and list of its members names
         """
+        # TODO make this return the objects, not strings
         members = {group.name: [member.name for member in group.Member()] for group in groups}
 
         return members
@@ -28,6 +29,7 @@ class Fennec(object):
         :param gl groups: A gitlab connection, and the list of gitlab groups
         :return dict: A dictionary of groups and their projects
         """
+        # TODO make this return the objects, not strings
         def is_forked(project):
             """
             Returns True of False if the project is forked
@@ -61,7 +63,7 @@ class Fennec(object):
         :param gl:
         :return dict: A dictionary of forked projects
         """
-
+        # TODO make this return the objects, not strings
         def is_forked(project):
             """
             Returns True of False if the project is forked
