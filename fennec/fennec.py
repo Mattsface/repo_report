@@ -40,7 +40,7 @@ class Fennec(object):
             except AttributeError:
                 return False
 
-        collected_projects = { }
+        collected_projects = {}
 
         for project in gl.Project():
 
@@ -49,10 +49,10 @@ class Fennec(object):
             if is_forked(project):
                 continue
             elif project_namespace in collected_projects:
-                collected_projects[project.namespace].append(project)
+                collected_projects[project_namespace].append(project.name)
             else:
-                collected_projects[project.namespace] = []
-                collected_projects.update({project.namespace: project.name})
+                collected_projects[project_namespace] = []
+                collected_projects[project_namespace].append(project.name)
         return collected_projects
 
     @staticmethod
