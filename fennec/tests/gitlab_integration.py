@@ -146,3 +146,12 @@ class TestFennec(unittest.TestCase):
         self.assertEqual(expected_results, results)
 
 
+class TestFen_CLI(unittest.TestCase):
+
+    def setUp(self):
+        pass
+
+    def test_import_config(self):
+        pass
+
+    
