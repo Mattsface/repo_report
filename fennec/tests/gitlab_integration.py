@@ -101,10 +101,10 @@ class TestFennec(unittest.TestCase):
         fake_groups = [FakeGroup(group) for group in self.groups]
         fake_projects = fake_projects_group1 + fake_projects_group2 + fake_projects_group3
 
-        #forked_project = FakeProject('forked_project')
-        #setattr(forked_project, 'forked_from_project', dict(path='testpast', name='project2', namespace='not_a_group'))
-
-        #fake_projects.append(forked_project)
+        forked_project = FakeProject('forked_project')
+        setattr(forked_project, 'forked_from_project', dict(path='testpast', name='project2', namespace='not_a_group'))
+        setattr(forked_project, 'namespace', FakeGroup('group3'))
+        fake_projects.append(forked_project)
         mock_project.return_value = fake_projects
 
         # act
@@ -112,3 +112,12 @@ class TestFennec(unittest.TestCase):
 
         # assert
         self.assertEqual(expected_results, results)
+
+    @patch.object(Gitlab, 'Project')
+    def test_find_forked_namespace_projects(self, mock_project):
+
+        # arrange
+
+
+        
+
