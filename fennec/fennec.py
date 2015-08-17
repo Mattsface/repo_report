@@ -74,7 +74,20 @@ class Fennec(object):
             except AttributeError:
                 return False
 
-        pass
+        forked_projects = {}
+
+        for project in gl.Project():
+
+            project_namespace = project.namespace.name
+
+            if not is_forked(project):
+                continue
+            elif project_namespace in forked_projects:
+                forked_projects[project_namespace].append(project.name)
+            else:
+                forked_projects[project_namespace] = []
+                forked_projects[project_namespace].append(project.name)
+        return forked_projects
 
 
 
