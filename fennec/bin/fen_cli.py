@@ -20,6 +20,10 @@ def main():
     args = parse_arguments()
     config = import_config(args.config_file)
 
+    # lets get this party started?
+    # TODO Party
+
+
 
 def import_config(config_file=None):
     """

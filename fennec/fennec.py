@@ -93,3 +93,5 @@ class Fennec(object):
 
 
 
+class FennecMail(object):
+    pass

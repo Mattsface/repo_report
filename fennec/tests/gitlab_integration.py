@@ -1,5 +1,5 @@
 import unittest
-from fennec.fennec import Fennec
+from fennec.fennec import Fennec, FennecMail
 from gitlab import Gitlab
 from gitlab import Group
 from gitlab import GroupMember
@@ -146,12 +146,20 @@ class TestFennec(unittest.TestCase):
         self.assertEqual(expected_results, results)
 
 
-class TestFen_CLI(unittest.TestCase):
+class TestFennecMail(unittest.TestCase):
 
     def setUp(self):
-        pass
+        """
+        Set up object mock
+        """
+        self.gl = FakeGitlab
+        self.fennec = Fennec()
+        self.groups = ['group1', 'group2', 'group3']
 
-    def test_import_config(self):
-        pass
+        self.member_dict = {'group1': ['member1', 'member2', 'member3'],
+                            'group2': ['member4', 'member5', 'member6'],
+                            'group3': ['member7', 'member8', 'member9']}
 
-    
+        self.project_dict = {'group1': ['project1', 'project2', 'project3'],
+                             'group2': ['project4', 'project5', 'project6'],
+                             'group3': ['project7', 'project8', 'project9']}
