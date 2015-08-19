@@ -7,9 +7,8 @@ from gitlab import Project
 from mock import patch, MagicMock, Mock, call
 
 
+# monkey patches!
 class FakeGroup(Group):
-
-
     def __init__(self, name):
         self.name = name
 
@@ -23,13 +22,11 @@ class FakeGitlab(Gitlab):
 
 
 class FakeGroupMember(GroupMember):
-
     def __init__(self, name):
         self.name = name
 
 
 class FakeProject(Project):
-
     def __init__(self, name, forked_from_project=None):
         self.name = name
         self.forked_from_project = forked_from_project
@@ -166,22 +163,7 @@ class TestFennecMail(unittest.TestCase):
 
 
     def test_render_message(self):
-        pass
         # arrange
-
-
-        # act
-
-
-        # assert
-
-    def test_send_message
         pass
 
-        # arrange
 
-
-        # act
-
-
-        # assert

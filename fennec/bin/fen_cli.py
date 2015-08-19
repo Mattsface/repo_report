@@ -5,7 +5,7 @@
 # Create a status report of the repos present on the Gitlab server
 # Output in the following formats:
 # HTML
-# JSON
+
 
 
 # TODO Figure out what python modules I'll need
@@ -58,6 +58,9 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
+
+def send_mail():
+    pass
 
 if __name__ == "__main__":
     main()
