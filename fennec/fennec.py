@@ -1,4 +1,7 @@
 from gitlab import *
+import jinja2
+from email.mime.text import MIMEText
+import smtplib
 
 
 class Fennec(object):
@@ -91,7 +94,42 @@ class Fennec(object):
                 forked_projects[project_namespace].append(project.name)
         return forked_projects
 
-
-
 class FennecMail(object):
-    pass
+
+    template = """\
+    <p />
+    <span style="font-weight: bold; font-size: 14px;">Gitlab Repo report lists Groups with their members and projects</span>
+    <p />
+    <br /
+    <table cellpadding="5" cellspacing="0">
+
+    </table>
+    <p />
+    <br />
+    """
+
+    def __init__(self, **kwargs):
+        self.address = kwargs.get('address')
+        self.subject = kwargs.get('subjet')
+        self.from_addr = kwargs.get('from_addr')
+        self.mx = kwargs.get('mx')
+        self.reply_to = kwargs.get('reply_to')
+        self.message = kwargs.get('message')
+
+    def render_message(self):
+        pass
+
+
+    def send_message(self):
+        """
+        Send out an e-mail
+        """
+        msg = MIMEText(self.message, 'html')
+        msg['Subject'] = self.subject
+        msg['From'] = self.from_addr
+        msg['To'] = self.address
+        msg.add_header('Reply-To', self.reply_to)
+
+        s = smtplib.SMTP(self.mx)
+        s.sendmail(self.from_addr, self.address, msg.as_string())
+        s.quit()

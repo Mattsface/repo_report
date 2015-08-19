@@ -163,3 +163,25 @@ class TestFennecMail(unittest.TestCase):
         self.project_dict = {'group1': ['project1', 'project2', 'project3'],
                              'group2': ['project4', 'project5', 'project6'],
                              'group3': ['project7', 'project8', 'project9']}
+
+
+    def test_render_message(self):
+        pass
+        # arrange
+
+
+        # act
+
+
+        # assert
+
+    def test_send_message
+        pass
+
+        # arrange
+
+
+        # act
+
+
+        # assert
