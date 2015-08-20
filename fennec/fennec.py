@@ -102,45 +102,39 @@ class FennecMail(object):
     <p />
     <br />
     <table cellpadding="5" cellspacing="0">
-    <h3> Groups: </h3>
-    <br />
+    <h5> Groups: </h5>
     <ul>
     {% for group in groups %}
         <li> {{ group }} </li>
     {% endfor %}
     </ul>
-
-    <h3> Members: </h3>
+    <h5> Members: </h5>
     {% for group, users in members.items() %}
-        <h3>Group: {{ group }}</h3>
+        <h6>Group: {{ group }}</h6>
         <ul>
         {% for member in users %}
             <li>{{ member }} </li>
         {% endfor %}
         </ul>
     {% endfor %}
-
-    <h3> Projects: </h3>
+    <h5> Projects: </h5>
     {% for group, repos in projects.items() %}
-        <h3>Group: {{ group }}</h3>
+        <h6>Group: {{ group }}</h6>
         <ul>
         {% for project in repos %}
             <li>{{ project }} </li>
         {% endfor %}
         </ul>
     {% endfor %}
-
-    <h3> Forked Projects: </h3>
+    <h5> Forked Projects: </h5>
     {% for namespace, projects in forked_projects.items() %}
-        <h3>Namespace: {{ namespace }}</h3>
+        <h6>Namespace: {{ namespace }}</h6>
         <ul>
             {% for project in projects %}
             <li>{{ project }}</li>
             {% endfor %}
         </ul>
     {% endfor %}
-
-
     </table>
     <p />
     <br />

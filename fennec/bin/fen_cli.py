@@ -35,13 +35,10 @@ def main():
                               members=members,
                               projects=namespace_projects,
                               forked_projects=forked_projects)
-
     try:
         send_mail()
     except:
         pass
-
-
 
 def import_config(config_file=None):
     """

@@ -1,6 +1,7 @@
 import unittest
 from fennec.fennec import Fennec, FennecMail
-import fennec.bin
+from fennec.bin import fen_cli
+from os import remove
 from gitlab import Gitlab
 from gitlab import Group
 from gitlab import GroupMember
@@ -163,21 +164,52 @@ class TestFennecMail(unittest.TestCase):
                             'user2': ['project2', 'project3']}
 
     def test_render_message(self):
+        # TODO make this test not suck
         # arrange
         message = FennecMail(groups=self.groups, members=self.member_dict, projects=self.project_dict,
                              forked_projects=self.forked_dict)
-
         # act
         rendered_messsage = message.render_message()
 
         # assert
-        print rendered_messsage
+        self.assertEqual(isinstance(rendered_messsage, unicode), "Expected {}, but got {}".format("unicode", isinstance(rendered_messsage)))
 
 
 class TestFenCLI(unittest.TestCase):
+    def setUp(self):
+
+        self.python_gitlab_filename = 'python-gitlab.cfg'
+
+        self.python_gitlab = """
+        [global]
+        # required setting
+        default = local
+
+        # optional settings
+        ssl_verify = False
+        timeout = 5
+
+        [local]
+        url = https://gitlab.test.com
+        private_token = blahblahblah
+        ssl_verify = false
+        """
+
+        with file(self.python_gitlab_filename, 'w') as f:
+            f.write(self.python_gitlab)
+
+    def tearDown(self):
+        remove(self.python_gitlab_filename)
 
     def test_import_config(self):
-        pass
+        # arrange
+
+
+        # act
+        config = fen_cli.import_config(self.python_gitlab_filename)
+
+        # assert
+        print type(config)
 
     def test_failed_import_config(self):
         pass
