@@ -12,6 +12,7 @@
 import argparse
 import email
 from gitlab import *
+from fennec.fennec import Fennec, FennecMail
 import ConfigParser
 
 
@@ -20,8 +21,25 @@ def main():
     args = parse_arguments()
     config = import_config(args.config_file)
 
-    # lets get this party started?
-    # TODO Party
+    #TODO add the correct keys
+    gitlab_key = config.get()
+    gitlab_url = config.get()
+
+    gl = connect_to_gitlab()
+
+    groups = Fennec.groups(gl)
+    members = Fennec.find_members(groups)
+    namespace_projects = Fennec.find_namespace_projects(gl, groups)
+    forked_projects = Fennec.find_forked_namespace_projects(gl)
+    html_message = FennecMail(groups=groups,
+                              members=members,
+                              projects=namespace_projects,
+                              forked_projects=forked_projects)
+
+    try:
+        send_mail()
+    except:
+        pass
 
 
 
@@ -51,15 +69,18 @@ def parse_arguments():
 
     output = parser.add_mutually_exclusive_group(required=True)
     output.add_argument('-e', action='store', dest='email', type=bool, help="Length of random password to be created")
-    output.add_argument('-j', action='store', dest='json', type=bool, help="Password for role account")
+    output.add_argument('-j', action='store', dest='json', type=bool, help="This won't do shit")
 
     parser.add_argument('-c', action='store', dest='config_file', help="Location of python-gitlab.cfg")
 
     args = parser.parse_args()
     return args
 
+def connect_to_gitlab():
+    pass
 
-def send_mail():
+
+def send_mail(msg):
     pass
 
 if __name__ == "__main__":
