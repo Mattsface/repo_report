@@ -33,7 +33,6 @@ class FakeProject(Project):
 
 
 class TestFennec(unittest.TestCase):
-
     def setUp(self):
         """
         Set up object mock
@@ -41,7 +40,6 @@ class TestFennec(unittest.TestCase):
         self.gl = FakeGitlab
         self.fennec = Fennec()
         self.groups = ['group1', 'group2', 'group3']
-
 
     @patch.object(Gitlab, 'Group')
     def test_group_collection(self, mock_group):
@@ -144,7 +142,6 @@ class TestFennec(unittest.TestCase):
 
 
 class TestFennecMail(unittest.TestCase):
-
     def setUp(self):
         """
         Set up object mock
@@ -161,9 +158,16 @@ class TestFennecMail(unittest.TestCase):
                              'group2': ['project4', 'project5', 'project6'],
                              'group3': ['project7', 'project8', 'project9']}
 
+        self.forked_dict = {'user1': ['project1'],
+                            'user2': ['project2', 'project3']}
 
     def test_render_message(self):
         # arrange
-        pass
+        message = FennecMail(groups=self.groups, members=self.member_dict, projects=self.project_dict,
+                             forked_projects=self.forked_dict)
 
+        # act
+        rendered_messsage = message.render_message()
 
+        # assert
+        print rendered_messsage

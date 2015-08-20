@@ -100,20 +100,62 @@ class FennecMail(object):
     <p />
     <span style="font-weight: bold; font-size: 14px;">Gitlab Repo report lists Groups with their members and projects</span>
     <p />
-    <br /
+    <br />
     <table cellpadding="5" cellspacing="0">
-    {{ self.message }}
+    <h3> Groups: </h3>
+    <br />
+    <ul>
+    {% for group in groups %}
+        <li> {{ group }} </li>
+    {% endfor %}
+    </ul>
+
+    <h3> Members: </h3>
+    {% for group, users in members.items() %}
+        <h3>Group: {{ group }}</h3>
+        <ul>
+        {% for member in users %}
+            <li>{{ member }} </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+
+    <h3> Projects: </h3>
+    {% for group, repos in projects.items() %}
+        <h3>Group: {{ group }}</h3>
+        <ul>
+        {% for project in repos %}
+            <li>{{ project }} </li>
+        {% endfor %}
+        </ul>
+    {% endfor %}
+
+    <h3> Forked Projects: </h3>
+    {% for namespace, projects in forked_projects.items() %}
+        <h3>Namespace: {{ namespace }}</h3>
+        <ul>
+            {% for project in projects %}
+            <li>{{ project }}</li>
+            {% endfor %}
+        </ul>
+    {% endfor %}
+
+
     </table>
     <p />
     <br />
     """
 
-    def __init__(self, message):
-        self.message = message
+    def __init__(self, **kwargs):
+        self.groups = kwargs.get('groups')
+        self.members = kwargs.get('members')
+        self.projects = kwargs.get('projects')
+        self.forked_projects = kwargs.get('forked_projects')
 
     def render_message(self):
         template = Template(self.email_template)
-        return template.render(self.message)
+        return template.render(groups=self.groups, members=self.members, projects=self.projects,
+                               forked_projects=self.forked_projects)
 
 
 
