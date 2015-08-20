@@ -1,5 +1,6 @@
 import unittest
 from fennec.fennec import Fennec, FennecMail
+import fennec.bin
 from gitlab import Gitlab
 from gitlab import Group
 from gitlab import GroupMember
@@ -171,3 +172,22 @@ class TestFennecMail(unittest.TestCase):
 
         # assert
         print rendered_messsage
+
+
+class TestFenCLI(unittest.TestCase):
+
+    def test_import_config(self):
+        pass
+
+    def test_failed_import_config(self):
+        pass
+
+    def test_connect_to_gitlab(self):
+        pass
+
+    def test_failed_connect_gitlab(self):
+        pass
+
+    def test_send_mail(self):
+        pass
+        # need monkey test

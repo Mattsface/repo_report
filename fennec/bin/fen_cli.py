@@ -76,6 +76,7 @@ def parse_arguments():
     args = parser.parse_args()
     return args
 
+
 def connect_to_gitlab():
     pass
 
