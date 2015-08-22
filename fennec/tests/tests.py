@@ -180,20 +180,21 @@ class TestFenCLI(unittest.TestCase):
 
         self.python_gitlab_filename = 'python-gitlab.cfg'
 
+# wtf? #TODO Fix this
         self.python_gitlab = """
-        [global]
-        # required setting
-        default = local
+[global]
+# required setting
+default = local
 
-        # optional settings
-        ssl_verify = False
-        timeout = 5
+# optional settings
+ssl_verify = False
+timeout = 5
 
-        [local]
-        url = https://gitlab.test.com
-        private_token = blahblahblah
-        ssl_verify = false
-        """
+[local]
+url = https://gitlab.test.com
+private_token = blahblahblah
+ssl_verify = False
+"""
 
         with file(self.python_gitlab_filename, 'w') as f:
             f.write(self.python_gitlab)
@@ -203,13 +204,23 @@ class TestFenCLI(unittest.TestCase):
 
     def test_import_config(self):
         # arrange
-
+        expected_gitlab_key = 'blahblahblah'
+        expected_gitlab_url = 'https://gitlab.test.com'
+        expected_default = 'local'
 
         # act
         config = fen_cli.import_config(self.python_gitlab_filename)
-
+        gitlab_url = config.get(section='local', option='url')
+        gitlab_key = config.get(section='local', option='private_token')
+        gitlab_default = config.get(section='global', option='local')
         # assert
-        print type(config)
+
+        self.assertEqual(expected_gitlab_key, gitlab_key, "Expected {}, but got {}".format(expected_gitlab_key,
+                                                                                           gitlab_key))
+        self.assertEqual(expected_gitlab_url, gitlab_url, "Expected {}, but got {}".format(expected_gitlab_url,
+                                                                                           gitlab_url))
+        self.assertEqual(expected_default, gitlab_default, "Expected {}, but got {}".format(expected_default,
+                                                                                            gitlab_default))
 
     def test_failed_import_config(self):
         pass
