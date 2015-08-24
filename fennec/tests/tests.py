@@ -182,19 +182,19 @@ class TestFenCLI(unittest.TestCase):
 
 # wtf? #TODO Fix this
         self.python_gitlab = """
-[global]
-# required setting
-default = local
+        [global]
+        # required setting
+        default = local
 
-# optional settings
-ssl_verify = False
-timeout = 5
+        # optional settings
+        ssl_verify = False
+        timeout = 5
 
-[local]
-url = https://gitlab.test.com
-private_token = blahblahblah
-ssl_verify = False
-"""
+        [local]
+        url = https://gitlab.test.com
+        private_token = blahblahblah
+        ssl_verify = False
+        """
 
         with file(self.python_gitlab_filename, 'w') as f:
             f.write(self.python_gitlab)
