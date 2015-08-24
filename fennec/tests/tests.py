@@ -7,6 +7,7 @@ from gitlab import Group
 from gitlab import GroupMember
 from gitlab import Project
 from mock import patch, MagicMock, Mock, call
+import ConfigParser
 
 
 # monkey patches!
@@ -181,15 +182,26 @@ class TestFenCLI(unittest.TestCase):
         self.python_gitlab_filename = 'python-gitlab.cfg'
 
 # wtf? #TODO Fix this
-        self.python_gitlab = """
+        self.python_gitlab = """\
+[global]
+# required setting
+default = local
+
+# optional settings
+ssl_verify = False
+            timeout = 5
+
+[local]
+url = https://gitlab.test.com
+private_token = blahblahblah
+ssl_verify = False
+"""
+
+        self.bad_gitlab_filename = 'broken-gitlab.cfg'
+
+        self.bad_python_gitlab = """\
         [global]
-        # required setting
         default = local
-
-        # optional settings
-        ssl_verify = False
-        timeout = 5
-
         [local]
         url = https://gitlab.test.com
         private_token = blahblahblah
@@ -199,8 +211,12 @@ class TestFenCLI(unittest.TestCase):
         with file(self.python_gitlab_filename, 'w') as f:
             f.write(self.python_gitlab)
 
+        with file(self.bad_gitlab_filename, 'w') as f:
+            f.write(self.bad_python_gitlab)
+
     def tearDown(self):
         remove(self.python_gitlab_filename)
+        remove(self.bad_gitlab_filename)
 
     def test_import_config(self):
         # arrange
@@ -212,7 +228,7 @@ class TestFenCLI(unittest.TestCase):
         config = fen_cli.import_config(self.python_gitlab_filename)
         gitlab_url = config.get(section='local', option='url')
         gitlab_key = config.get(section='local', option='private_token')
-        gitlab_default = config.get(section='global', option='local')
+        gitlab_default = config.get(section='global', option='default')
         # assert
 
         self.assertEqual(expected_gitlab_key, gitlab_key, "Expected {}, but got {}".format(expected_gitlab_key,
@@ -223,7 +239,15 @@ class TestFenCLI(unittest.TestCase):
                                                                                             gitlab_default))
 
     def test_failed_import_config(self):
-        pass
+        self.unknown_file_path = 'yadayada'
+
+        with self.assertRaises(IOError):
+            config = fen_cli.import_config(self.unknown_file_path)
+
+    def test_failed_to_read_config(self):
+
+        with self.assertRaises(ConfigParser.MissingSectionHeaderError):
+            config = fen_cli.import_config(self.bad_gitlab_filename)
 
     def test_connect_to_gitlab(self):
         pass

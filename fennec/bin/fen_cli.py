@@ -40,6 +40,7 @@ def main():
     except:
         pass
 
+
 def import_config(config_file=None):
     """
     import config file
@@ -48,12 +49,9 @@ def import_config(config_file=None):
 
     if config_file is None:
         config_file = "~/.python-gitlab.cfg"
-    try:
-        config.readfp(open(config_file))
-        return config
-    except IOError:
-        print "Unable to open config file, place it in ~/.python-gitlab.cfg"
-        sys.exit(1)
+
+    config.readfp(open(config_file))
+    return config
 
 
 def parse_arguments():
