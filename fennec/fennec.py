@@ -105,7 +105,7 @@ class FennecMail(object):
     <h5> Groups: </h5>
     <ul>
     {% for group in groups %}
-        <li> {{ group }} </li>
+        <li> {{ group.name }} </li>
     {% endfor %}
     </ul>
     <h5> Members: </h5>

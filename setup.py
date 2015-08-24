@@ -10,7 +10,6 @@ setup(name='fennec',
       install_requires=['python-gitlab',
                         'mock',
                         'jinja2',
-                        'smtplib',
                         'email'],
       dependency_links=[
           "git+ssh://git@github.com:gpocentek/python-gitlab.git#python-gitlab"
