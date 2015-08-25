@@ -46,7 +46,7 @@ class Fennec(object):
 
         collected_projects = {}
 
-        for project in gl.Project():
+        for project in gl.Project(all=True):
 
             project_namespace = project.namespace.name
 
@@ -80,7 +80,7 @@ class Fennec(object):
 
         forked_projects = {}
 
-        for project in gl.Project():
+        for project in gl.Project(all=True):
 
             project_namespace = project.namespace.name
 
@@ -91,6 +91,7 @@ class Fennec(object):
             else:
                 forked_projects[project_namespace] = []
                 forked_projects[project_namespace].append(project.name)
+
         return forked_projects
 
 
@@ -98,37 +99,37 @@ class FennecMail(object):
 
     email_template = """\
     <p />
-    <span style="font-weight: bold; font-size: 14px;">Gitlab Repo report lists Groups with their members and projects</span>
+    <span style="font-weight: bold; font-size: 14px;">Gitlab Repo report lists Groups with their members and projects (Sorry my HTML blows)</span>
     <p />
     <br />
     <table cellpadding="5" cellspacing="0">
-    <h5> Groups: </h5>
+    <h4> Groups: </h4>
     <ul>
     {% for group in groups %}
         <li> {{ group.name }} </li>
     {% endfor %}
     </ul>
-    <h5> Members: </h5>
+    <h4> Members: </h4>
     {% for group, users in members.items() %}
-        <h6>Group: {{ group }}</h6>
+        <h5>Group: {{ group }}</h5>
         <ul>
         {% for member in users %}
             <li>{{ member }} </li>
         {% endfor %}
         </ul>
     {% endfor %}
-    <h5> Projects: </h5>
+    <h4> Projects: </h4>
     {% for group, repos in projects.items() %}
-        <h6>Group: {{ group }}</h6>
+        <h5>Group: {{ group }}</h5>
         <ul>
         {% for project in repos %}
             <li>{{ project }} </li>
         {% endfor %}
         </ul>
     {% endfor %}
-    <h5> Forked Projects: </h5>
+    <h4> Forked Projects: </h4>
     {% for namespace, projects in forked_projects.items() %}
-        <h6>Namespace: {{ namespace }}</h6>
+        <h5>Namespace: {{ namespace }}</h5>
         <ul>
             {% for project in projects %}
             <li>{{ project }}</li>

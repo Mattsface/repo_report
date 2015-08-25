@@ -77,11 +77,9 @@ def parse_arguments():
     output.add_argument('-e', action='store_true', dest='email', help="Send an email")
     output.add_argument('-j', action='store_true', dest='json', help="This won't do shit, not implemented yet")
 
-    parser.add_argument('-c', action='store', default='~/.python-config.cfg', dest='config_file', help="Location of python-gitlab.cfg")
-    parser.add_argument('-d', action='store', default='mspah@zulily.com', dest='email_dest',
-                        required=True, help="Email destination")
-    parser.add_argument('-s', action='store', default='infraops@zulily.com', dest='email_source',
-                        required=True, help="Email source")
+    parser.add_argument('-c', action='store', dest='config_file', help="Location of python-gitlab.cfg")
+    parser.add_argument('-d', action='store', default='mspah@zulily.com', dest='email_dest', help="Email destination")
+    parser.add_argument('-s', action='store', default='infraops@zulily.com', dest='email_source', help="Email source")
     parser.add_argument('-m', action='store', default='localhost', dest='mx', help='MX record')
     args = parser.parse_args()
     return args
