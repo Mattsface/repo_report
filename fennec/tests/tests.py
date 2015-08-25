@@ -6,6 +6,7 @@ from gitlab import Gitlab
 from gitlab import Group
 from gitlab import GroupMember
 from gitlab import Project
+from gitlab import CurrentUser
 from mock import patch, MagicMock, Mock, call
 import ConfigParser
 
@@ -18,11 +19,15 @@ class FakeGroup(Group):
     def Member(self, **kwargs):
         pass
 
+class FakeUser(CurrentUser):
+    def __init__(self):
+        pass
 
 class FakeGitlab(Gitlab):
     def __init__(self):
         pass
-
+    def auth(self):
+        return
 
 class FakeGroupMember(GroupMember):
     def __init__(self, name):
@@ -179,6 +184,9 @@ class TestFennecMail(unittest.TestCase):
 class TestFenCLI(unittest.TestCase):
     def setUp(self):
 
+        self.gl = FakeGitlab
+
+
         self.python_gitlab_filename = 'python-gitlab.cfg'
 
 # wtf? #TODO Fix this
@@ -249,7 +257,10 @@ ssl_verify = False
         with self.assertRaises(ConfigParser.MissingSectionHeaderError):
             config = fen_cli.import_config(self.bad_gitlab_filename)
 
+    # bleh these tests suck
     def test_connect_to_gitlab(self):
+        #gl = fen_cli.connect_to_gitlab('fkjsdflkd', 'https://www.test.gitlab.com')
+        #self.assertIsInstance(gl, CurrentUser)
         pass
 
     def test_failed_connect_gitlab(self):

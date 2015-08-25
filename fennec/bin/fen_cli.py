@@ -39,10 +39,8 @@ def main():
     members = Fennec.find_members(groups)
     namespace_projects = Fennec.find_namespace_projects(gl, groups)
     forked_projects = Fennec.find_forked_namespace_projects(gl)
-    fennecmessage = FennecMail(groups=groups,
-                              members=members,
-                              projects=namespace_projects,
-                              forked_projects=forked_projects)
+    fennecmessage = FennecMail(groups=groups, members=members, projects=namespace_projects,
+                               forked_projects=forked_projects)
 
     print fennecmessage.render_message()
 
@@ -87,7 +85,7 @@ def connect_to_gitlab(key, url):
     :param url: Gitlab URL
     :return: Gitlab connection object
     """
-    gl = Gitlab(url=url, private_token=key,ssl_verify=False)
+    gl = Gitlab(url=url, private_token=key, ssl_verify=False)
     gl.auth()
     return gl
 
