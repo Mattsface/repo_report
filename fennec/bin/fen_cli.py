@@ -7,12 +7,12 @@
 # HTML
 
 import argparse
-import email
+import smtplib
 from gitlab import *
 from fennec.fennec import Fennec, FennecMail
 from os.path import expanduser
 import ConfigParser
-
+from email.mime.text import MIMEText
 
 
 def main():
@@ -42,7 +42,9 @@ def main():
     fennecmessage = FennecMail(groups=groups, members=members, projects=namespace_projects,
                                forked_projects=forked_projects)
 
-    print fennecmessage.render_message()
+    msg = fennecmessage.render_message()
+
+    send_mail(msg, mx=args.mx, email_dest=args.email_dest, email_source=args.email_source, reply_to=args.email_dest)
 
 
 def import_config(config_file=None):
@@ -72,8 +74,10 @@ def parse_arguments():
     output.add_argument('-j', action='store_true', dest='json', help="This won't do shit, not implemented yet")
 
     parser.add_argument('-c', action='store', dest='config_file', help="Location of python-gitlab.cfg")
-
-    args = parser.parse_args()
+    parser.add_argument('-d', action='store', dest='email_dest', required=True, help="Email destination")
+    parser.add_argument('-s', action='store', dest='email_source', required=True, help="Email source")
+    parser.add_argument('-m', action='store', default='localhost', dest='mx', help='MX record')
+    args = parser.parse_args
     return args
 
 
@@ -90,8 +94,20 @@ def connect_to_gitlab(key, url):
     return gl
 
 
-def send_mail(msg):
-    pass
+def send_mail(msg, mx, email_dest, email_source, reply_to):
+    """
+    Send out an e-mail
+    """
+    msg = MIMEText(msg, 'html')
+    msg['Subject'] = 'Repo Report'
+    msg['From'] = email_source
+    msg['To'] = email_dest
+    msg.add_header('Reply-To', reply_to)
+
+    s = smtplib.SMTP(mx)
+    s.sendmail(email_source, email_dest, msg.as_string())
+    s.quit()
+
 
 if __name__ == "__main__":
     main()

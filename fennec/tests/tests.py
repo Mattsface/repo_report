@@ -19,15 +19,19 @@ class FakeGroup(Group):
     def Member(self, **kwargs):
         pass
 
+
 class FakeUser(CurrentUser):
     def __init__(self):
         pass
 
+
 class FakeGitlab(Gitlab):
     def __init__(self):
         pass
+
     def auth(self):
         return
+
 
 class FakeGroupMember(GroupMember):
     def __init__(self, name):
