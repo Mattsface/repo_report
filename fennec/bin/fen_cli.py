@@ -20,7 +20,7 @@ def main():
     try:
         config = import_config(args.config_file)
     except IOError:
-        print "Unable to located ~/.python-gitlab.cfg"
+        print "Unable to locate ~/.python-gitlab.cfg"
         sys.exit(1)
 
     gitlab_key = config.get(section='local', option='private_token')
@@ -30,10 +30,13 @@ def main():
         gl = connect_to_gitlab(gitlab_key, gitlab_url)
     except GitlabAuthenticationError:
         print "AuthenticationError when connecting to Gitlab Server"
+        sys.exit(1)
     except GitlabConnectionError:
         print "Unable to connect to Gitlab server"
+        sys.exit(1)
     except GitlabError:
-        print "Oops, unknown Gitlab error "
+        print "Oops, unknown Gitlab error"
+        sys.exit(1)
 
     groups = Fennec.groups(gl)
     members = Fennec.find_members(groups)
@@ -73,7 +76,7 @@ def parse_arguments():
     output.add_argument('-e', action='store_true', dest='email', help="Send an email")
     output.add_argument('-j', action='store_true', dest='json', help="This won't do shit, not implemented yet")
 
-    parser.add_argument('-c', action='store', dest='config_file', help="Location of python-gitlab.cfg")
+    parser.add_argument('-c', action='store', default='~/.python-config.cfg', dest='config_file', help="Location of python-gitlab.cfg")
     parser.add_argument('-d', action='store', default='mspah@zulily.com', dest='email_dest',
                         required=True, help="Email destination")
     parser.add_argument('-s', action='store', default='infraops@zulily.com', dest='email_source',
