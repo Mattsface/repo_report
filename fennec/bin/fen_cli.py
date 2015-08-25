@@ -17,6 +17,7 @@ from email.mime.text import MIMEText
 
 def main():
     args = parse_arguments()
+
     try:
         config = import_config(args.config_file)
     except IOError:
@@ -82,7 +83,7 @@ def parse_arguments():
     parser.add_argument('-s', action='store', default='infraops@zulily.com', dest='email_source',
                         required=True, help="Email source")
     parser.add_argument('-m', action='store', default='localhost', dest='mx', help='MX record')
-    args = parser.parse_args
+    args = parser.parse_args()
     return args
 
 
