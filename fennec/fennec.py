@@ -32,17 +32,7 @@ class Fennec(object):
         :return dict: A dictionary of groups and their projects
         """
         # TODO make this return the objects, not strings
-        def is_forked(project):
-            """
-            Returns True of False if the project is forked
-            :param project: a project object
-            :return: boolean
-            """
-            try:
-                if project.forked_from_project:
-                    return True
-            except AttributeError:
-                return False
+
 
         collected_projects = {}
 
@@ -50,7 +40,7 @@ class Fennec(object):
 
             project_namespace = project.namespace.name
 
-            if is_forked(project):
+            if Fennec.is_forked(project):
                 continue
             elif project_namespace in collected_projects:
                 collected_projects[project_namespace].append(project.name)
@@ -65,18 +55,6 @@ class Fennec(object):
         :param gl:
         :return dict: A dictionary of forked projects
         """
-        # TODO make this return the objects, not strings
-        def is_forked(project):
-            """
-            Returns True of False if the project is forked
-            :param project: a project object
-            :return: boolean
-            """
-            try:
-                if project.forked_from_project:
-                    return True
-            except AttributeError:
-                return False
 
         forked_projects = {}
 
@@ -84,7 +62,7 @@ class Fennec(object):
 
             project_namespace = project.namespace.name
 
-            if not is_forked(project):
+            if not Fennec.is_forked(project):
                 continue
             elif project_namespace in forked_projects:
                 forked_projects[project_namespace].append(project.name)
@@ -94,8 +72,25 @@ class Fennec(object):
 
         return forked_projects
 
+    @classmethod
+    def is_forked(cls, project):
+        """
+        Returns True of False if the project is forked
+        :param project: a project object
+        :return: boolean
+        """
+        try:
+            if project.forked_from_project:
+                return True
+        except AttributeError:
+            return False
 
 class FennecMail(object):
+
+    # TODO Add Multiple templates
+    # FIXME I'm not seeing eveything I want to see as the admin user
+    # FIXME I need to read up on the permissions of the admin user and read what read permissions he has
+
 
     email_template = """\
     <p />

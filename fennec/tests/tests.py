@@ -124,7 +124,7 @@ class TestFennec(unittest.TestCase):
     def test_find_forked_namespace_projects(self, mock_project):
 
         # arrange
-        expected_results = {'forked_group': ['forked_project']}
+        expected_results = {'forked_group': ['project2']}
 
         fake_projects_group1 = [FakeProject(project) for project in ['project1', 'project2', 'project3']]
         fake_projects_group2 = [FakeProject(project) for project in ['project4', 'project5', 'project6']]
@@ -140,8 +140,8 @@ class TestFennec(unittest.TestCase):
 
         fake_projects = fake_projects_group1 + fake_projects_group2 + fake_projects_group3
 
-        forked_project = FakeProject('forked_project')
-        setattr(forked_project, 'forked_from_project', dict(path='testpast', name='project2', namespace='forked_group'))
+        forked_project = FakeProject('project2')
+        setattr(forked_project, 'forked_from_project', dict(path='testpath', name='project2', namespace='forked_group'))
         setattr(forked_project, 'namespace', FakeGroup('forked_group'))
         fake_projects.append(forked_project)
         mock_project.return_value = fake_projects
@@ -182,7 +182,7 @@ class TestFennecMail(unittest.TestCase):
         rendered_messsage = message.render_message()
 
         # assert
-        self.assertEqual(isinstance(rendered_messsage, unicode), "Expected {}, but got {}".format("unicode", isinstance(rendered_messsage)))
+        self.assertEqual(isinstance(rendered_messsage, unicode), True, "Expected {}, but got {}".format("unicode", type(rendered_messsage)))
 
 
 class TestFenCLI(unittest.TestCase):
@@ -193,7 +193,7 @@ class TestFenCLI(unittest.TestCase):
 
         self.python_gitlab_filename = 'python-gitlab.cfg'
 
-# wtf? #TODO Fix this
+# wtf? #FIXME Fix this, adding any indentation causes this test  to fail
         self.python_gitlab = """\
 [global]
 # required setting
@@ -261,7 +261,7 @@ ssl_verify = False
         with self.assertRaises(ConfigParser.MissingSectionHeaderError):
             config = fen_cli.import_config(self.bad_gitlab_filename)
 
-    # bleh these tests suck
+    # TODO Add more tests
     def test_connect_to_gitlab(self):
         #gl = fen_cli.connect_to_gitlab('fkjsdflkd', 'https://www.test.gitlab.com')
         #self.assertIsInstance(gl, CurrentUser)
