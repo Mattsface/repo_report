@@ -13,7 +13,8 @@ from fennec.fennec import Fennec, FennecMail
 from os.path import expanduser
 import ConfigParser
 from email.mime.text import MIMEText
-
+import requests
+requests.packages.urllib3.disable_warnings()
 
 def main():
     args = parse_arguments()
